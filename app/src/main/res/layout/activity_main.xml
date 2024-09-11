@@ -16,6 +16,7 @@
         android:orientation="horizontal">
 
     <EditText
+        android:id="@+id/etNombre"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1.5"
@@ -25,6 +26,7 @@
         android:inputType="text"/>
 
     <ImageButton
+        android:id="@+id/ibtnMicrofono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
@@ -35,6 +37,7 @@
 
 </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNombres"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16sp"

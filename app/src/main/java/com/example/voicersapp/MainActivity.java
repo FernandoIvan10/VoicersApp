@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import com.example.voicersapp.databinding.ActivityMainBinding;
 
@@ -37,14 +39,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.rvNombres.setLayoutManager(new LinearLayoutManager(this));
         adaptador = new AdaptadorNombres(listaNombres);
-        binding.rvNombres.setAdaptador(adaptador);
+        binding.rvNombres.setAdapter(adaptador);
 
-        binding.ibtnMicrofono.setOnClickListener(
-                
-        );
+        binding.ibtnMicrofono.setOnClickListener(view->{
+            binding.etNombre.setText("");
+            escucharVoz();
+        });
+        binding.etNombre.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filtrar(editable.toString());
+            }
+        });
     }
+
+    private void escucharVoz(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        activityResultLauncher.launch(intent);
+    }
+    private void filtrar(String texto){
+        ArrayList listaFiltrada = new ArrayList();
+        for (String nombre:listaNombres){
+            if(nombre.toLowerCase().contains(texto.toLowerCase())){
+                listaFiltrada.add(nombre);
+            }
+        }
+        adaptador.filtrar(listaFiltrada);
+    }
+
 }
